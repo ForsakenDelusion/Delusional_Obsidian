@@ -17,7 +17,7 @@ name 日记
 type command
 action QuickAdd: Create_Daily
 ```
-^button-creatdaliy
+^button-createdaily
 
 ```button
 name 打开日记

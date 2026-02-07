@@ -2,7 +2,7 @@
 > [!btn]+
 > - `button-createproj`
 > - `button-createtodo`
-> - `button-opendaily`
+> - `button-createdaily`
 
 > [!NOTE]+ 📝 未完成的TODO
 > ```dataviewjs
@@ -103,4 +103,5 @@
 > [!note]+ 管理面板
 > - [[Base_Image.base]]
 > - [[Base_MOC.base]]
+> - [[MOC_主页]]
 
