@@ -1,0 +1,47 @@
+/* 针对类型为 "btn" 的 Callout 进行魔改 */
+.callout[data-callout="btn"] {
+    background: transparent;      /* 去掉背景色 */
+    border: none;                 /* 去掉边框 */
+    box-shadow: none;             /* 去掉阴影 */
+    padding: 0;                   /* 去掉内边距 */
+    margin: 0;
+}
+
+/* 隐藏 Callout 的标题栏 */
+.callout[data-callout="btn"] .callout-title {
+    display: none;
+}
+
+/* 核心布局：把列表变成横向 Flex 布局 */
+.callout[data-callout="btn"] .callout-content > ul {
+    display: flex;
+    gap: 12px;                    /* 按钮之间的间距 */
+    padding: 0;
+    margin: 0;
+    list-style: none;             /* 去掉列表前面的小圆点 */
+    width: 100%;
+}
+
+/* 让每个列表项（li）平分宽度 */
+.callout[data-callout="btn"] .callout-content > ul > li {
+    flex: 1;                      /* 1:1:1:1 平分宽度 */
+    min-width: 0;                 /* 防止溢出 */
+    margin: 0;
+}
+
+/* 针对 Meta Bind 按钮样式的微调 */
+.callout[data-callout="btn"] button {
+    width: 100% !important;       /* 强制按钮宽度撑满 */
+    height: 60px !important;      /* 自定义高度 */
+    justify-content: center;      /* 文字居中 */
+}
+
+/* --- 移动端适配 --- */
+@media (max-width: 450px) {
+    .callout[data-callout="btn"] .callout-content > ul {
+        flex-wrap: wrap;
+    }
+    .callout[data-callout="btn"] .callout-content > ul > li {
+        flex: 0 0 calc(50% - 6px);
+    }
+}

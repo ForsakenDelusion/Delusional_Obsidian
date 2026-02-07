@@ -1,0 +1,19 @@
+{
+  "id": "f8bc9a48-f9c4-4054-a61b-b018f0e3f19e",
+  "title": "你好啊，我正在思考进一步优化我的obsidian仓库结构的事情，有没有觉得sources下面的结构还...",
+  "titleGenerationStatus": "failed",
+  "createdAt": 1768586034149,
+  "updatedAt": 1768647295257,
+  "lastResponseAt": 1768647295257,
+  "sessionId": "a6f13697-1daf-4cb6-91d6-034893f9d06f",
+  "sdkSessionId": "a6f13697-1daf-4cb6-91d6-034893f9d06f",
+  "usage": {
+    "model": "claude-haiku-4-5-20251001",
+    "inputTokens": 652,
+    "cacheCreationInputTokens": 20991,
+    "cacheReadInputTokens": 27243,
+    "contextWindow": 200000,
+    "contextTokens": 48886,
+    "percentage": 24
+  }
+}

@@ -1,0 +1,17 @@
+views:
+  - type: table
+    name: 表格
+    filters:
+      and:
+        - '!file.inFolder("Toolkit")'
+    groupBy:
+      property: category
+      direction: ASC
+    order:
+      - file.name
+      - tags
+    sort:
+      - property: file.name
+        direction: DESC
+    indentProperties: false
+    markers: bullet

@@ -1,0 +1,16 @@
+{
+  "newLinkFormat": "shortest",
+  "attachmentFolderPath": "Source/500_Attachements/501_Images",
+  "showLineNumber": true,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "Toolkit/02_Buffer",
+  "pdfExportSettings": {
+    "pageSize": "Letter",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 100
+  },
+  "alwaysUpdateLinks": true,
+  "strictLineBreaks": false,
+  "showUnsupportedFiles": true
+}

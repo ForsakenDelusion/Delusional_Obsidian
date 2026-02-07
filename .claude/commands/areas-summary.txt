@@ -1,0 +1,36 @@
+AREAS vs PROJECTS - Quick Reference
+
+CURRENT STATE:
+- 200_Areas folder: DOES NOT EXIST YET
+- Areas: Defined in template, implemented as string metadata only
+- 5 Area categories: Learning (70%), Development, Life, Research, Writing
+
+ACTIVE AREAS (by project count):
+1. 🎓 Learning - 5 projects (考研复试机试, 考研项目, Obsidian, 阅读, etc)
+2. 💻 Development - 1 project (VibeCoding)
+3. 🏠 Life - 1 project (macOS config)
+
+KEY DISTINCTION:
+- Area = Ongoing responsibility zone (no deadline)
+- Project = Time-bound goal (has due_date)
+
+PROJECT STRUCTURE:
+area: "Learning"  ← String reference (not linked)
+status: active/completed
+due_date: YYYY-MM-DD
++ sub-files: Week1.md, Week2.md, etc.
++ links to: 20_Cards/*
+
+MISSING:
+- 200_Areas folder structure
+- Area frontmatter files (type: area)
+- Area dashboards/MOCs
+- Area-level status tracking
+- Wikilinks from projects to areas
+
+NEXT STEPS (for redesign):
+1. Create 200_Areas/ with subfolders for each area
+2. Convert string area refs to wikilinks: area: [[200_Learning/_Learning]]
+3. Add area frontmatter: type: area, description, projects list
+4. Create area dashboards with Dataview filters
+5. Update daily/weekly views to filter by area

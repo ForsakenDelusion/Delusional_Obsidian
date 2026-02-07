@@ -1,0 +1,9 @@
+{
+  "defaultCollapsed": true,
+  "collapseIcon": "⬇️",
+  "expandIcon": "➡️",
+  "enableHorizontalScroll": false,
+  "collapsedLines": 0,
+  "buttonAlignment": "left",
+  "transparentButton": true
+}

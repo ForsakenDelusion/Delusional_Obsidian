@@ -1,0 +1,139 @@
+================================================================================
+                    AREAS vs PROJECTS - RELATIONSHIP MAP
+================================================================================
+
+YOUR CURRENT VAULT STRUCTURE (as of Feb 2026):
+
+                           VAULT ROOT
+                               |
+                ┌──────────────┼──────────────┐
+                |              |              |
+            00_Inbox       20_Cards       30_Projects  ← THIS IS WHERE AREAS ARE
+                |              |              |
+            Entry point    Knowledge      Time-bound
+            to system      base          initiatives
+                          (templates,    (+ area refs)
+                          concepts)
+
+
+AREAS: Implicit String Metadata (Currently)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+                        ┌─────────────────────────────┐
+                        │ 5 LIFE DOMAINS (Template)   │
+                        └─────────────────────────────┘
+                                    |
+                    ┌───────────────┼───────────────┐
+                    |               |               |
+            ┌─────────────┐   ┌─────────────┐  ┌──────────┐
+            │  Learning   │   │ Development │  │   Life   │
+            │   (70%)     │   │   (14%)     │  │  (14%)   │
+            │   ACTIVE    │   │   ACTIVE    │  │ ACTIVE   │
+            └─────────────┘   └─────────────┘  └──────────┘
+                    |               |               |
+        ┌───────────┴─────────┐     |               |
+        |                     |     |               |
+    ┌─────────────┐   ┌──────────┐  |          ┌─────────────┐
+    │  Project 1  │   │ Project 2│  │          │  Project 7  │
+    │   (考研复试   │   │(考研项目) │  │          │ (macOS config)
+    │   机试)      │   │          │  │          │             │
+    │             │   │          │  │          └─────────────┘
+    │ Due: Feb28  │   │ Due: TBD │  │
+    │             │   │          │  │
+    │ CHILDREN:   │   │ CHILDREN │  │         ┌──────────────┐
+    │ Week1.md    │   │ :多个    │  └────────→│ VibeCoding   │
+    │ Week2.md    │   │ sub-proj │            │              │
+    │ Week3.md    │   │          │            │ Due: TBD     │
+    └─────────────┘   └──────────┘            └──────────────┘
+            |               |
+            └───────┬───────┘
+                    |
+                    ↓ Links to
+            ┌──────────────────────┐
+            │  20_Cards Knowledge  │
+            │  (21_机试算法, etc)   │
+            └──────────────────────┘
+
+
+FRONTMATTER CONNECTIONS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROJECT FILE EXAMPLE:
+─────────────────────
+---
+type: project           ← Always "project"
+title: 考研复试机试      
+area: "Learning"        ← Points to AREA (string, NOT linked!)
+status: active          
+start_date: 2026-01-18  
+due_date: 2026-02-28    ← TIME-BOUND (key difference from areas)
+---
+
+AREA FILE EXAMPLE (PROPOSED, NOT YET CREATED):
+──────────────────────────────────────────────
+---
+type: area              ← New type: "area"
+title: Learning         
+description: Academic and skill development
+status: active          
+created_date: 2026-01-15
+emoji: 🎓               ← Optional visual identifier
+projects:              ← Would list contained projects
+  - [[30_Projects/考研复试机试/考研复试机试.md]]
+  - [[30_Projects/Obsidian笔记工作流/Obsidian笔记工作流.md]]
+---
+
+
+KEY INSIGHTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. IMPLICIT vs EXPLICIT
+   ✅ Areas are IMPLICITLY defined (in template)
+   ❌ Areas are NOT EXPLICITLY instantiated (no 200_Areas/ folder)
+   → Projects reference areas as STRING metadata only
+
+2. HIERARCHY
+   Area (ongoing responsibility) → Project (time-bound goal) → Cards (knowledge)
+   └─ One area can contain MANY projects
+   └─ Each project can link to MANY cards
+   └─ Cards are reusable across projects
+
+3. TIME-BOUND DISTINCTION
+   Area = NO deadline (ongoing forever)
+   Project = HAS deadline (due_date field)
+   → This is the MAIN distinguishing factor
+
+4. CURRENT STATE
+   - Learning: 5 projects clustered (exam prep + knowledge management)
+   - Development: 1 project (experimental/tools)
+   - Life: 1 project (maintenance)
+   - Research: 0 projects (defined but unused)
+   - Writing: 0 projects (defined but unused)
+
+5. FOR YOUR REDESIGN
+   Convert from: area: "Learning"
+   Convert to:   area: [[200_Learning/_Learning.md]]
+   
+   Add new first-class area objects with:
+   - Frontmatter (type: area, description, emoji)
+   - Project roster & status dashboard
+   - Area-specific resources & MOCs
+
+
+DATAVIEW USAGE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Current Filter in Week_Daily.md:
+    p.type == "project" && p.area  ← Filters by area field
+
+Future Potential:
+    p.area.path.includes("200_Learning")  ← Filter by linked area file
+    dv.pages('"200_Areas"').where(...)    ← Query all areas
+    
+This enables:
+- Area-level dashboards
+- Area-level project status rollup
+- Area-based calendar views
+
+
+================================================================================

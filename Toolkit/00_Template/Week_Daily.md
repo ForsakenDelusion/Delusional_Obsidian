@@ -1,0 +1,220 @@
+---
+type: record
+title: <% tp.file.title %>
+created: <% tp.file.creation_date("YYYY-MM-DD")%>
+filename: <% tp.date.now("YYYY-MM-DD") %>-<% tp.file.title %>
+week: <% tp.file.title %>
+start_week: <% moment(tp.file.title, "YYYY-[W]WW").startOf('isoWeek').format("YYYY-MM-DD") %>
+end_week: <% moment(tp.file.title, "YYYY-[W]WW").endOf('isoWeek').format("YYYY-MM-DD") %>
+---
+
+> [!NOTE]- 进度追踪
+> ### 本周聚焦笔记
+> ```dataviewjs
+> // ================= 配置加载区 =================
+> // 1. 读取配置文件
+> const configNote = dv.page("Toolkit/config");
+> 
+> if (!configNote || !configNote.paths) {
+>     dv.paragraph("⚠️ **错误**：无法读取 Toolkit/config 配置或 paths 属性");
+>     
+> } else {
+>     // ================= 主逻辑区 =================
+>     
+>     // 2. 获取笔记存储路径 (对应 Config 中的 paths.notes)
+>     const notesPath = configNote.paths.notes; 
+>     
+>     // ================= 时间参数区 =================
+>     const curr = dv.current();
+> 
+>     // 自动检测文档属性中是否有 start_week 和 end_week
+>     if (!curr.start_week || !curr.end_week) {
+>         dv.paragraph("⚠️ **参数缺失**：请在当前文档的 Frontmatter 中设置 `start_week` 和 `end_week`");
+>         
+>     } else {
+>         // 时间计算
+>         const start = dv.date(curr.start_week);
+>         // 结束日期加一天，确保覆盖结束当天的所有时间
+>         const end = dv.date(curr.end_week).plus({ days: 1 });
+> 
+>         // ================= 查询逻辑区 =================
+>         // 核心修改 1：查询源改为指定的笔记路径 (不再限制 #card 标签)
+>         const querySource = `"${notesPath}"`;
+> 
+>         const pages = dv.pages(querySource)
+>             .where(p => {
+>                 // 核心修改 2：移除了 type == "card" 的判断，只要是文件都算
+>                 
+>                 // 核心修改 3：改用 file.ctime (文件创建时间) 以适应通用笔记
+>                 // 如果你的笔记有专门的 created 属性，可以将 p.file.ctime 改回 p.created
+>                 const inTimeRange = (p.file.mtime >= start && p.file.mtime <= end) ||
+>                                     (p.file.ctime >= start && p.file.ctime <= end);
+>                 
+>                 return inTimeRange;
+>             })
+>             .sort(p => p.file.mtime, "desc");
+> 
+>         // ================= 渲染输出区 =================
+>         if (pages.length > 0) {
+>             dv.table(
+>                 ["笔记", "创建时间", "最后修改"], // 3个表头
+>                 pages.map(p => [
+>                     p.file.link, 
+>                     p.file.ctime.toFormat("MM-dd HH:mm"), // 补全第2列数据
+>                     p.file.mtime.toFormat("MM-dd HH:mm")  // 第3列数据
+>                 ])
+>             );
+>         } else {
+>             dv.paragraph("🍃 *本周期内没有新建或修改的笔记*");
+>         }
+>     }
+> }
+> ```
+> ### 本周聚焦项目
+> ```dataviewjs
+> // ================= 配置加载区 =================
+> const configNote = dv.page("Toolkit/config"); // ⚠️ 确保路径正确
+> 
+> if (!configNote || !configNote.paths) {
+>     dv.paragraph("⚠️ **错误**：无法读取 Toolkit/config 配置或 paths 属性");
+> } else {
+>     // ================= 主逻辑区 =================
+>     
+>     // 1. 获取项目根路径 (例如 "Effort/400_Projects")
+>     const projectsRoot = configNote.paths.projects;
+>     
+>     // ================= 时间参数区 =================
+>     const curr = dv.current();
+>     if (!curr.start_week || !curr.end_week) {
+>         dv.paragraph("⚠️ **参数缺失**：请设置 start_week 和 end_week");
+>     } else {
+>         const start = dv.date(curr.start_week);
+>         const end = dv.date(curr.end_week).plus({ days: 1 });
+> 
+>         // ================= 查询逻辑区 =================
+>         // 查找所有在项目路径下、且本周有变动的文件
+>         const pages = dv.pages(`"${projectsRoot}"`)
+>             .where(p => p.file.mtime >= start && p.file.mtime <= end);
+> 
+>         // ================= 聚合逻辑区 (核心修改) =================
+>         // 我们需要把变动的文件，按“项目文件夹”归类去重
+>         const projectMap = new Map();
+> 
+>         for (let p of pages) {
+>             // 获取文件所在的文件夹路径
+>             const folderPath = p.file.folder;
+>             
+>             // 排除掉项目根目录本身的文件，只看子文件夹（即具体项目）
+>             if (folderPath === projectsRoot) continue;
+> 
+>             // 提取项目名称：取项目根目录后的第一级文件夹名
+>             // 例如路径是 "Effort/400_Projects/MyProject/Docs" -> 提取 "MyProject"
+>             const relativePath = folderPath.replace(projectsRoot + "/", "");
+>             const projectName = relativePath.split("/")[0];
+>             
+>             // 如果提取不到项目名，跳过
+>             if (!projectName) continue;
+> 
+>             // 获取该项目的 Dashboard 主文件（通常是 000_项目名_Dashboard.md 或同名文件）
+>             // 这里我们尝试构建一个链接，指向该项目文件夹下的主文件
+>             // 为了简单，我们直接用文件夹名作为显示名称
+>             
+>             // 更新该项目的最近修改时间（取该项目下所有变动文件中最新的那个时间）
+>             if (!projectMap.has(projectName)) {
+>                 projectMap.set(projectName, {
+>                     name: projectName,
+>                     latestUpdate: p.file.mtime,
+>                     status: p.project_status || p.status || "-", // 尝试从变动文件中读取状态
+>                     area: p.area || "-"
+>                 });
+>             } else {
+>                 const existing = projectMap.get(projectName);
+>                 if (p.file.mtime > existing.latestUpdate) {
+>                     existing.latestUpdate = p.file.mtime;
+>                 }
+>                 // 如果当前文件有状态且之前的没有，补充状态
+>                 if (!existing.status || existing.status === "-") {
+>                     existing.status = p.project_status || p.status || "-";
+>                 }
+>             }
+>         }
+> 
+>         // ================= 渲染输出区 =================
+>         if (projectMap.size > 0) {
+>             dv.table(
+>                 ["项目 (文件夹)", "最近更新", "状态"], 
+>                 Array.from(projectMap.values())
+>                     .sort((a, b) => b.latestUpdate - a.latestUpdate) // 按时间倒序
+>                     .map(item => [
+>                         // 构造一个指向该项目文件夹的链接 (Obsidian支持链接到文件夹吗？通常不支持直接点击跳转文件夹)
+>                         // 所以这里我们尝试链接到该项目下的同名 Dashboard 文件，或者仅仅显示文本
+>                         // 方案 A: 尝试链接到 "Projects/项目名/000_项目名_Dashboard" (基于你之前的QuickAdd逻辑)
+>                         `[[${projectsRoot}/${item.name}/000_${item.name}_Dashboard|${item.name}]]`, 
+>                         
+>                         item.latestUpdate.toFormat("MM-dd HH:mm"),
+>                         item.status
+>                     ])
+>             );
+>         } else {
+>             dv.paragraph("💤 *本周没有项目发生变动*");
+>         }
+>     }
+> }
+> ```
+> ### 本周任务完成情况
+> ```dataviewjs
+> // ================= 配置加载区 =================
+> const configNote = dv.page("Toolkit/config"); // ⚠️ 确保路径正确
+> 
+> if (!configNote || !configNote.paths) {
+>     dv.paragraph("⚠️ **错误**：无法读取 Toolkit/config 配置或 paths 属性");
+> 
+> } else {
+>     // ================= 主逻辑区 =================
+>     
+>     // 1. 定义任务扫描范围
+>     // 我们只扫描那些真正会有任务的地方，避免全库扫描
+>     const P = configNote.paths;
+>     const taskSources = [
+>         `"${P.daily}"`,     // 日记里的任务
+>         `"${P.projects}"`,  // 项目里的任务
+>         `"${P.areas}"`      // 领域里的任务
+>     ].join(" OR ");
+>     
+>     // ================= 时间参数区 =================
+>     const curr = dv.current();
+>     if (!curr.start_week || !curr.end_week) {
+>         dv.paragraph("⚠️ **参数缺失**：请设置 start_week 和 end_week");
+> 
+>     } else {
+>         const start = dv.date(curr.start_week);
+>         const end = dv.date(curr.end_week).plus({ days: 1 });
+> 
+>         // ================= 查询逻辑区 =================
+>         // 1. 获取范围内所有文件
+>         const pages = dv.pages(taskSources);
+>         
+>         // 2. 提取并筛选任务
+>         const tasks = pages.file.tasks
+>             .where(t => 
+>                 t.completed &&                  // 必须已完成
+>                 t.completion >= start &&        // 完成时间 >= 本周开始
+>                 t.completion <= end             // 完成时间 <= 本周结束
+>             );
+> 
+>         // ================= 渲染输出区 =================
+>         if (tasks.length > 0) {
+>             // 💡 亮点：增加一个总数统计
+>             dv.paragraph(`✅ **本周完成任务**: ${tasks.length} 个`);
+>             
+>             // 渲染任务列表
+>             // 第二个参数 false 表示不把文件名分组显示（如果你喜欢按文件分组，改成 true）
+>             dv.taskList(tasks, false);
+>             
+>         } else {
+>             dv.paragraph("☕ *本周很清闲，没有记录完成的任务*");
+>         }
+>     }
+> }
+> ```
+> 

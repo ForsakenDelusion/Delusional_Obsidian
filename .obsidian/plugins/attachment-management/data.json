@@ -1,0 +1,21 @@
+{
+  "language": "en",
+  "attachPath": {
+    "attachmentRoot": "/attachments",
+    "saveAttE": "nextToNote",
+    "attachmentPath": "",
+    "attachFormat": "IMG-${date}",
+    "type": "GLOBAL"
+  },
+  "dateFormat": "YYYYMMDDHHmmssSSS",
+  "excludeExtensionPattern": "",
+  "autoRenameAttachment": true,
+  "excludedPaths": "00_Inbox",
+  "excludePathsArray": [
+    "00_Inbox"
+  ],
+  "excludeSubpaths": false,
+  "originalNameStorage": [],
+  "overridePath": {},
+  "disableNotification": false
+}

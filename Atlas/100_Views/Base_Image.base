@@ -1,0 +1,9 @@
+views:
+  - type: cards
+    name: 表格
+    filters:
+      and:
+        - file.folder == "Source/500_Attachements/501_Images"
+    image: file.file
+    cardSize: 130
+    imageAspectRatio: 0.75

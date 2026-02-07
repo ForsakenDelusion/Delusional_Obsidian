@@ -1,0 +1,10 @@
+{
+  "translucency": false,
+  "cssTheme": "Border",
+  "theme": "system",
+  "accentColor": "#f5b55c",
+  "enabledCssSnippets": [
+    "hide-header-hashes",
+    "btn_col"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "0dbeca1c-6174-47aa-a956-38d4874cdc97",
+  "title": "/init",
+  "titleGenerationStatus": "failed",
+  "createdAt": 1768648027266,
+  "updatedAt": 1768648205400,
+  "lastResponseAt": 1768648027309,
+  "sessionId": "0dbeca1c-6174-47aa-a956-38d4874cdc97",
+  "sdkSessionId": "0dbeca1c-6174-47aa-a956-38d4874cdc97",
+  "currentNote": "00_Inbox/Obsidian笔记重构.md",
+  "usage": {
+    "model": "claude-sonnet-4-5-20250929",
+    "inputTokens": 510,
+    "cacheCreationInputTokens": 104782,
+    "cacheReadInputTokens": 66874,
+    "contextWindow": 200000,
+    "contextTokens": 172166,
+    "percentage": 86
+  }
+}

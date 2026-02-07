@@ -1,0 +1,6 @@
+
+/* 如果你是在实时预览模式 (Live Preview) */
+.markdown-source-view.mod-cm6 .HyperMD-header .cm-formatting-header {
+    /* display: none !important; */
+    color: #8a8a8a !important;
+}
