@@ -2,6 +2,9 @@
 
 一种卡片笔记盒的具体实践，旨在提供无感的记录过程，让自动化助你顺畅写作。库中的笔记系统补完计划可以看到我的设计思路
 
+![](https://github.com/ForsakenDelusion/Delusional_Obsidian/blob/main/Source/500_Attachements/501_Images/3_README_20260207.png)
+
+
 ![](https://github.com/ForsakenDelusion/Delusional_Obsidian/blob/main/Source/500_Attachements/501_Images/1_README_20260207.png)
 
 ## 项目理念
